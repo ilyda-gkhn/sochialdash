@@ -1,0 +1,10 @@
+const nodemailer=require("nodemailer");
+let transporter;
+function isConfigured(){return Boolean(process.env.EMAIL_HOST&&process.env.EMAIL_PORT&&process.env.EMAIL_USER&&process.env.EMAIL_PASS&&process.env.EMAIL_FROM);}
+function getTransport(){if(!isConfigured())return null;if(!transporter)transporter=nodemailer.createTransport({host:process.env.EMAIL_HOST,port:Number(process.env.EMAIL_PORT),secure:String(process.env.EMAIL_SECURE||"").toLowerCase()==="true"||Number(process.env.EMAIL_PORT)===465,auth:{user:process.env.EMAIL_USER,pass:process.env.EMAIL_PASS},connectionTimeout:Number(process.env.EMAIL_TIMEOUT_MS)||10000});return transporter;}
+async function send({to,subject,text,html}){const client=getTransport();if(!client)return {ok:false,reason:"not_configured"};try{const info=await client.sendMail({from:process.env.EMAIL_FROM,to,subject,text,html});return {ok:true,messageId:info.messageId};}catch(err){console.error("[mail]",err.message);return {ok:false,reason:"delivery_failed"};}}
+async function sendPasswordResetEmail(toEmail,rawToken){const base=String(process.env.APP_BASE_URL||process.env.OAUTH_REDIRECT_BASE||"http://localhost:3000").replace(/\/$/,"");const link=`${base}/?resetToken=${encodeURIComponent(rawToken)}#/login`;return send({to:toEmail,subject:"SocialDash şifre sıfırlama",text:`Şifrenizi bir saat içinde sıfırlamak için bu bağlantıyı açın: ${link}`,html:`<p>SocialDash şifrenizi sıfırlamak için aşağıdaki bağlantıyı bir saat içinde açın.</p><p><a href="${link}">Şifremi sıfırla</a></p><p>Bu isteği siz yapmadıysanız e-postayı yok sayın.</p>`});}
+async function sendNotificationEmail(to,title,message){return send({to,subject:`SocialDash: ${title}`,text:message,html:`<h2>${escapeHtml(title)}</h2><p>${escapeHtml(message)}</p>`});}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function resetTransport(){transporter=null;}
+module.exports={isConfigured,send,sendPasswordResetEmail,sendNotificationEmail,resetTransport};

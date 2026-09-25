@@ -1,0 +1,18 @@
+# Free demonstration deployment: local data is temporary on Render Free.
+services:
+  - type: web
+    name: socialdash
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node scripts/start-render.js
+    healthCheckPath: /api/test
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 26.8.2
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SOCIAL_TOKEN_ENCRYPTION_KEY
+        generateValue: true
