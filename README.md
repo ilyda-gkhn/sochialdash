@@ -2,6 +2,14 @@
 
 Mevcut Express + SQLite + HTML/CSS/JavaScript yapısı ve sayfa tasarımı korunarak güncellenmiştir.
 
+## İndirilebilir staj paketi
+
+[SocialDash v2.0.0 sürümünü indir](https://github.com/ilyda-gkhn/sochialdash/releases/tag/v2.0.0). Assets bölümündeki `socialdash-staj-v2.0.0.zip` dosyasını seçin; paketi açıp `BASLA.md` dosyasını okuyun. Kaynaklar, dört staj belgesi ve kurulum kılavuzları birlikte sunulur. Social Manager projenin eski adıdır.
+
+20 Ekim 2026 kontrolünde Node.js 26.8.2 üzerinde mevcut yerel bağımlılıklarla 18 test grubu ve 99 test geçti. Sıfırdan bağımlılık kurulumu, Windows ve canlı dış servisler ayrıca doğrulanmadı. Ayrıntılar: [STAJ-PAKETI.md](STAJ-PAKETI.md). GitHub’dan indirilen ZIP ve içindeki dosyaların SHA-256 özetleri doğrulandı.
+
+Paket gerçek `.env` anahtarlarını, mevcut kullanıcı veritabanını veya `node_modules` içermez. Yeni kurulum boş veritabanı oluşturur. Mevcut kayıtların taşınması için özel veritabanı ve ayar yedeği ayrıca korunmalıdır.
+
 ## Mac üzerinde çalıştırma
 
 ZIP dosyasını açın. Terminal'de `cd ` yazıp açılan `socialdash` klasörünü Terminal'e sürükleyin, Return'a basın. Node.js ve npm kurulu olmalıdır. Doğrulanan ortam: Node.js 26.8.2, npm 11.19.1.
